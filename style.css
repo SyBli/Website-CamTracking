@@ -1,0 +1,353 @@
+:root {
+  --bg: #0b0d12;
+  --surface: #14171f;
+  --surface-2: #1b1f2a;
+  --border: #2a2f3d;
+  --text: #eef1f7;
+  --text-dim: #9aa3b5;
+  --accent: #6c8cff;
+  --accent-2: #7dffb3;
+  --danger: #ff6b6b;
+  --warning: #ffcf6b;
+  --radius-lg: 20px;
+  --radius-md: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(circle at 50% 0%, #171b26 0%, var(--bg) 55%);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px 48px;
+}
+
+.app {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.app-header {
+  text-align: center;
+}
+
+.app-header h1 {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 5vw, 34px);
+  letter-spacing: 0.3px;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+/* ---------- Banners ---------- */
+.banner {
+  width: 100%;
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid transparent;
+}
+
+.banner-warning {
+  background: rgba(255, 207, 107, 0.1);
+  border-color: rgba(255, 207, 107, 0.35);
+  color: var(--warning);
+}
+
+.banner-error {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: rgba(255, 107, 107, 0.35);
+  color: var(--danger);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- Controls ---------- */
+.controls {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), #4b6bff);
+  color: white;
+  border: none;
+  padding: 14px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(108, 140, 255, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(108, 140, 255, 0.45);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0px) scale(0.98);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.status-dot.active {
+  background: var(--accent-2);
+  box-shadow: 0 0 8px rgba(125, 255, 179, 0.7);
+}
+
+.status-dot.loading {
+  background: var(--warning);
+  box-shadow: 0 0 8px rgba(255, 207, 107, 0.7);
+  animation: pulse 1s infinite ease-in-out;
+}
+
+.status-dot.error {
+  background: var(--danger);
+  box-shadow: 0 0 8px rgba(255, 107, 107, 0.7);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ---------- Video stage ---------- */
+.video-stage {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/* Efek gesture 5 jari: zoom-in halus pada seluruh area video */
+.video-container.zoomed {
+  transform: scale(1.03);
+}
+
+#video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* mirror seperti cermin */
+  display: block;
+  filter: none;
+  transition: filter 0.35s ease;
+}
+
+#video.blurred {
+  filter: blur(18px) brightness(0.75);
+}
+
+/* Blur ringan untuk gesture 5 jari — jauh lebih tipis dari blur gesture ✌️ */
+#video.blurred-light {
+  filter: blur(4px) brightness(0.92);
+}
+
+#overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1); /* mirror agar sejajar dengan video */
+  pointer-events: none;
+}
+
+/* ---------- Gesture text overlay ---------- */
+.gesture-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  font-size: clamp(20px, 5vw, 34px);
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.28);
+  padding: 14px 28px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  white-space: nowrap;
+}
+
+.gesture-text.show {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+/* ---------- Partikel: bintang ✨ & bubble (efek gesture 5 jari) ---------- */
+.particles-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.particle {
+  position: absolute;
+  bottom: -20px;
+  will-change: transform, opacity;
+}
+
+.particle-star {
+  font-size: 22px;
+  animation: star-float linear forwards;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.75));
+}
+
+.particle-bubble {
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.95), rgba(125, 255, 179, 0.35));
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 10px rgba(125, 255, 179, 0.45);
+  animation: bubble-float ease-in forwards;
+}
+
+@keyframes star-float {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(0.6);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--rise, -220px)) translateX(var(--drift, 12px)) rotate(180deg) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes bubble-float {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(var(--rise, -260px)) translateX(var(--drift, -10px)) scale(1);
+    opacity: 0;
+  }
+}
+
+/* ---------- Placeholder before camera starts ---------- */
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--text-dim);
+  background: linear-gradient(160deg, var(--surface), var(--surface-2));
+  transition: opacity 0.3s ease;
+}
+
+.placeholder span {
+  font-size: 44px;
+}
+
+.placeholder p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.placeholder.hidden-el {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.app-footer {
+  color: var(--text-dim);
+  font-size: 12px;
+  text-align: center;
+  max-width: 600px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  .video-container {
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+  }
+
+  .btn-primary {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .gesture-text {
+    padding: 10px 18px;
+  }
+}

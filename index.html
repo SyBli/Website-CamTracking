@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hand Tracking — Deteksi Gerakan Tangan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="app-header">
+      <h1>Hand Tracking 2 Jari dan 5 Jari</h1>
+      <p class="subtitle">Deteksi tangan &amp; gesture ✌️ secara realtime langsung di browser</p>
+    </header>
+
+    <!-- Banner peringatan jika dibuka via file:// -->
+    <div id="fileWarning" class="banner banner-warning hidden">
+      ⚠️ Halaman ini dibuka langsung dari file (file://). Kamera dan modul JavaScript
+      <strong>tidak akan berfungsi</strong> dalam mode ini. Jalankan lewat server lokal
+      (contoh: VS Code Live Server) melalui <code>http://localhost</code>.
+    </div>
+
+    <!-- Banner error umum -->
+    <div id="errorBanner" class="banner banner-error hidden">
+      <span id="errorText"></span>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn" class="btn-primary">🎥 Aktifkan Kamera</button>
+      <div class="status">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Kamera belum aktif</span>
+      </div>
+    </div>
+
+    <div class="video-stage">
+      <div id="videoContainer" class="video-container">
+        <video id="video" playsinline autoplay muted></video>
+        <canvas id="overlay"></canvas>
+
+        <!-- Layer partikel bintang ✨ & bubble untuk efek gesture 5 jari -->
+        <div id="particles" class="particles-layer"></div>
+
+        <div id="gestureText" class="gesture-text">foto kita blur...</div>
+
+        <div id="placeholder" class="placeholder">
+          <span>📷</span>
+          <p>Klik "Aktifkan Kamera" untuk mulai</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p>Dijalankan 100% di browser — HTML, CSS &amp; JavaScript murni + MediaPipe Hand Landmarker (CDN).</p>
+    </footer>
+
+  </div>
+
+  <!-- script.js dimuat sebagai ES Module karena memakai "import" dari CDN MediaPipe -->
+  <script type="module" src="script.js"></script>
+</body>
+</html>
